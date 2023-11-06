@@ -1,2 +1,4 @@
 - [Home](/index.html)
 - [notes](/notes/)
+  - [mysql](/notes/mysql.md)
+  - [python](/notes/python.md)
