@@ -1,1 +1,1 @@
-[mysql](/docs/notes/mysql.md)
+[mysql](/notes/mysql.md)
