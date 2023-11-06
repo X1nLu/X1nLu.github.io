@@ -1,2 +1,2 @@
 [Home](/)
-[notes](notes/)
+[notes](/notes/)
