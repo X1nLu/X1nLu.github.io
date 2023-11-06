@@ -1,2 +1,2 @@
-* [Home](/)
-* [notes](/notes/)
+- [Home](/)
+- [notes](/notes/)
