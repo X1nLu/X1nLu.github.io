@@ -1,1 +1,3 @@
 # note
+
+- [mysql](mysql.md)
