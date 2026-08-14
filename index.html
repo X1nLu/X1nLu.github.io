@@ -66,8 +66,8 @@
   .brand{font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
   .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
   .nav-links{display:flex;gap:6px;flex-wrap:wrap}
-  .nav-links a{font-size:14px;color:var(--muted);padding:7px 12px;border-radius:999px;transition:color .25s,background .25s}
-  .nav-links a:hover{color:var(--text);background:var(--surface)}
+  .nav-links .nav-link{font-size:14px;color:var(--muted);padding:7px 12px;border-radius:999px;transition:color .25s,background .25s}
+  .nav-links .nav-link:hover{color:var(--text);background:var(--surface)}
   .nav-cta{font-size:14px;font-weight:600;color:#04121a;background:var(--accent);padding:8px 16px;border-radius:999px;transition:transform .2s var(--ease),box-shadow .3s}
   .nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px -8px var(--accent)}
 
@@ -213,14 +213,14 @@
   <div class="nav-in">
     <div class="brand"><span class="dot"></span>woody</div>
     <div class="nav-links">
-      <a href="#hero">首页</a>
-      <a href="#metrics">数据</a>
-      <a href="#timeline">经历</a>
-      <a href="#skills">技能</a>
-      <a href="#projects">项目</a>
-      <a href="#voices">评价</a>
+      <span class="nav-link">首页</span>
+      <span class="nav-link">数据</span>
+      <span class="nav-link">经历</span>
+      <span class="nav-link">技能</span>
+      <span class="nav-link">项目</span>
+      <span class="nav-link">评价</span>
     </div>
-    <a class="nav-cta" href="#contact">合作邀约</a>
+    <span class="nav-cta">合作邀约</span>
   </div>
 </nav>
 
@@ -235,8 +235,8 @@
           <div class="role">跨界颠覆者 · 首席混乱调解官（UPMA）</div>
           <p class="summary">曾以意念修复哈勃望远镜镜片，因“梦中解决黎曼猜想”被数学界授予“睡神”称号。擅长在混沌中建立秩序，在不可能中创造可能——其存在本身，即是对平庸的最大挑战。</p>
           <div class="hero-actions">
-            <a class="btn primary" href="#projects">看精选项目</a>
-            <a class="btn ghost" href="#timeline">倒序看经历</a>
+            <span class="btn primary">看精选项目</span>
+            <span class="btn ghost">倒序看经历</span>
           </div>
         </div>
         <div class="hero-side">
@@ -309,9 +309,9 @@
       <h2>想和我一起，把不可能变成 KPI？</h2>
       <p>无论是跨界研究、特邀讲座，还是一场关于“如何用荒诞解决普遍问题”的对谈，我都乐意聊聊。</p>
       <div class="foot-links">
-        <a class="btn primary" href="mailto:woody@chaos-to-order.galaxy">发邮件给我</a>
-        <a class="btn ghost" href="https://woody.space">访问项目集</a>
-        <a class="btn ghost" href="https://gxyu.edu/woody">学术主页</a>
+        <span class="btn primary">发邮件给我</span>
+        <span class="btn ghost">访问项目集</span>
+        <span class="btn ghost">学术主页</span>
       </div>
       <div class="foot-meta">woody · 银河系地球分部（远程友好） · 当前状态：开放跨界合作</div>
     </div>
