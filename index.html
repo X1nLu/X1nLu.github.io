@@ -1,11 +1,973 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS 加载动画合集 · 12 种纯 CSS Loader</title>
+<style>
+/* =========================================================================
+   基础重置与主题变量
+   ========================================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #0b0b12;
+  --bg-card:      #15151f;
+  --bg-card-hov:  #1a1a28;
+  --border:       #25253a;
+  --border-hov:   #3a3a55;
+  --text:         #e8e8f0;
+  --text-muted:   #8b8ba8;
+  --accent:       #818cf8;
+  --code-bg:      #0d0d15;
+  --radius:       14px;
+  --font:         -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+  --mono:         "SF Mono", "Fira Code", "Consolas", "Courier New", monospace;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================================================
+   页头
+   ========================================================================= */
+header {
+  text-align: center;
+  padding: 56px 24px 36px;
+}
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+}
+header .subtitle {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+header .badges {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+header .badge {
+  padding: 4px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* =========================================================================
+   网格布局
+   ========================================================================= */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+/* =========================================================================
+   卡片
+   ========================================================================= */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 200ms ease, background 200ms ease;
+  display: flex;
+  flex-direction: column;
+  animation: cardEnter 500ms ease-out both;
+}
+.card:nth-child(1) { animation-delay: 0ms; }
+.card:nth-child(2) { animation-delay: 50ms; }
+.card:nth-child(3) { animation-delay: 100ms; }
+.card:nth-child(4) { animation-delay: 150ms; }
+.card:nth-child(5) { animation-delay: 200ms; }
+.card:nth-child(6) { animation-delay: 250ms; }
+.card:nth-child(7) { animation-delay: 300ms; }
+.card:nth-child(8) { animation-delay: 350ms; }
+@keyframes cardEnter {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card:hover {
+  border-color: var(--border-hov);
+  background: var(--bg-card-hov);
+}
+
+.card-preview {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(129,140,248,0.06), transparent 70%);
+  border-bottom: 1px solid var(--border);
+}
+
+.card-body {
+  padding: 18px 20px 14px;
+  flex: 1;
+}
+.card-body h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.card-body p {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.card-footer {
+  padding: 0 20px 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+}
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn:active {
+  transform: scale(0.96);
+}
+.btn.copied {
+  border-color: #34d399;
+  color: #34d399;
+  background: rgba(52,211,153,0.08);
+}
+
+/* 代码折叠区 */
+.code-viewer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease;
+  border-top: 1px solid transparent;
+}
+.code-viewer.open {
+  max-height: 420px;
+  border-top-color: var(--border);
+}
+.code-viewer pre {
+  padding: 14px 18px;
+  background: var(--code-bg);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: #a5d6ff;
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.55;
+}
+
+/* =========================================================================
+   动画 1 · 旋转圆环
+   ========================================================================= */
+.ring-loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(129,140,248,0.2);
+  border-top-color: #818cf8;
+  border-radius: 50%;
+  animation: ring-spin 0.8s linear infinite;
+  will-change: transform;
+}
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================================
+   动画 2 · 脉冲圆点
+   ========================================================================= */
+.pulse-dots {
+  display: flex;
+  gap: 10px;
+}
+.pulse-dots span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #818cf8;
+  animation: dot-pulse 1.4s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.pulse-dots span:nth-child(2) { animation-delay: 0.2s; }
+.pulse-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dot-pulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1; }
+}
+
+/* =========================================================================
+   动画 3 · 弹跳柱条
+   ========================================================================= */
+.bounce-bars {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  height: 48px;
+}
+.bounce-bars span {
+  width: 7px;
+  height: 100%;
+  background: #34d399;
+  border-radius: 4px;
+  animation: bar-bounce 1s ease-in-out infinite;
+  will-change: transform;
+}
+.bounce-bars span:nth-child(2) { animation-delay: 0.1s; }
+.bounce-bars span:nth-child(3) { animation-delay: 0.2s; }
+.bounce-bars span:nth-child(4) { animation-delay: 0.3s; }
+.bounce-bars span:nth-child(5) { animation-delay: 0.4s; }
+@keyframes bar-bounce {
+  0%, 100% { transform: scaleY(0.35); }
+  50%      { transform: scaleY(1); }
+}
+
+/* =========================================================================
+   动画 4 · 波纹圆圈
+   ========================================================================= */
+.ripple-loader {
+  position: relative;
+  width: 52px;
+  height: 52px;
+}
+.ripple-loader span {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #f59e0b;
+  border-radius: 50%;
+  animation: ripple-pulse 1.5s ease-out infinite;
+  will-change: transform, opacity;
+}
+.ripple-loader span:nth-child(2) { animation-delay: 0.5s; }
+.ripple-loader span:nth-child(3) { animation-delay: 1s; }
+@keyframes ripple-pulse {
+  0%   { transform: scale(0); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* =========================================================================
+   动画 5 · 渐变锥形旋转器
+   ========================================================================= */
+.conic-spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #ec4899, #818cf8, transparent 70%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  animation: conic-spin 1s linear infinite;
+  will-change: transform;
+}
+@keyframes conic-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================================
+   动画 6 · 打字指示器
+   ========================================================================= */
+.typing-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  background: rgba(255,255,255,0.06);
+  padding: 12px 18px;
+  border-radius: 12px;
+}
+.typing-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #06b6d4;
+  animation: typing-bounce 1.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0);    opacity: 0.5; }
+  30%           { transform: translateY(-9px);  opacity: 1; }
+}
+
+/* =========================================================================
+   动画 7 · 骨架屏微光
+   ========================================================================= */
+.skeleton-shimmer {
+  width: 130px;
+}
+.skeleton-shimmer .sk-line {
+  height: 12px;
+  border-radius: 5px;
+  background: #25253a;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.skeleton-shimmer .sk-line:last-child {
+  margin-bottom: 0;
+  width: 65%;
+}
+.skeleton-shimmer .sk-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(129,140,248,0.4), transparent);
+  transform: translateX(-100%);
+  animation: shimmer-slide 1.6s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes shimmer-slide {
+  100% { transform: translateX(100%); }
+}
+
+/* =========================================================================
+   动画 8 · DNA 双螺旋
+   ========================================================================= */
+.dna-helix {
+  width: 44px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  perspective: 100px;
+}
+.dna-helix .rung {
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, #a78bfa 0%, #a78bfa 15%, #f472b6 85%, #f472b6 100%);
+  border-radius: 2px;
+  animation: dna-rotate 2s linear infinite;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.dna-helix .rung:nth-child(1) { animation-delay: 0s; }
+.dna-helix .rung:nth-child(2) { animation-delay: -0.2s; }
+.dna-helix .rung:nth-child(3) { animation-delay: -0.4s; }
+.dna-helix .rung:nth-child(4) { animation-delay: -0.6s; }
+.dna-helix .rung:nth-child(5) { animation-delay: -0.8s; }
+.dna-helix .rung:nth-child(6) { animation-delay: -1s; }
+.dna-helix .rung:nth-child(7) { animation-delay: -1.2s; }
+@keyframes dna-rotate {
+  0%   { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+/* =========================================================================
+   动画 9 · 轨道滑块
+   ========================================================================= */
+.track-loader {
+  width: 96px;
+  height: 8px;
+  border-radius: 999px;
+  background: #25253a;
+  overflow: hidden;
+}
+.track-loader::after {
+  content: '';
+  display: block;
+  width: 42%;
+  height: 100%;
+  border-radius: inherit;
+  background: #f97316;
+  animation: track-slide 1.1s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes track-slide {
+  0%, 100% { transform: translateX(-100%); }
+  50%      { transform: translateX(140%); }
+}
+
+/* =========================================================================
+   动画 10 · 翻转方块
+   ========================================================================= */
+.flip-cube {
+  width: 38px;
+  height: 38px;
+  background: #22c55e;
+  border-radius: 5px;
+  animation: cube-flip 1.35s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes cube-flip {
+  0%, 100% { transform: perspective(120px) rotateX(0deg) rotateY(0deg); }
+  25%      { transform: perspective(120px) rotateX(180deg) rotateY(0deg); }
+  50%      { transform: perspective(120px) rotateX(180deg) rotateY(180deg); }
+  75%      { transform: perspective(120px) rotateX(0deg) rotateY(180deg); }
+}
+
+/* =========================================================================
+   动画 11 · 轨道卫星
+   ========================================================================= */
+.orbit-loader {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border: 2px solid rgba(56, 189, 248, 0.3);
+  border-radius: 50%;
+  animation: orbit-spin 1.3s linear infinite;
+  will-change: transform;
+}
+.orbit-loader::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.8);
+  transform: translateX(-50%);
+}
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================================
+   动画 12 · 等距旋转点
+   ========================================================================= */
+.spinner-dots {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  animation: dots-spin 1s steps(8, end) infinite;
+  will-change: transform;
+}
+.spinner-dots span {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: #fb7185;
+  transform-origin: 4px 24px;
+}
+.spinner-dots span:nth-child(1) { transform: rotate(0deg); opacity: 0.2; }
+.spinner-dots span:nth-child(2) { transform: rotate(45deg); opacity: 0.3; }
+.spinner-dots span:nth-child(3) { transform: rotate(90deg); opacity: 0.4; }
+.spinner-dots span:nth-child(4) { transform: rotate(135deg); opacity: 0.5; }
+.spinner-dots span:nth-child(5) { transform: rotate(180deg); opacity: 0.6; }
+.spinner-dots span:nth-child(6) { transform: rotate(225deg); opacity: 0.7; }
+.spinner-dots span:nth-child(7) { transform: rotate(270deg); opacity: 0.8; }
+.spinner-dots span:nth-child(8) { transform: rotate(315deg); opacity: 1; }
+@keyframes dots-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================================
+   降级：尊重 prefers-reduced-motion
+   所有循环动画停止，卡片入场改为瞬时显示
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .anim-host,
+  .anim-host *,
+  .card {
+    animation: none !important;
+    transition: none !important;
+  }
+  .skeleton-shimmer .sk-line::after {
+    display: none;
+  }
+}
+
+/* =========================================================================
+   响应式
+   ========================================================================= */
+@media (max-width: 768px) {
+  header { padding: 36px 16px 20px; }
+  header h1 { font-size: 1.7rem; }
+  main { padding: 0 16px 40px; }
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
-  
+
+<header>
+  <h1>CSS 加载动画合集</h1>
+  <p class="subtitle">12 种纯 CSS 实现 · 零外部依赖 · 可直接复制使用</p>
+  <div class="badges">
+    <span class="badge">Keyframes + Transform</span>
+    <span class="badge">GPU 加速</span>
+    <span class="badge">prefers-reduced-motion 降级</span>
+  </div>
+</header>
+
+<main>
+<div class="grid">
+
+  <!-- ===================== 1 · 旋转圆环 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host">
+      <div class="ring-loader"></div>
+    </div>
+    <div class="card-body">
+      <h3>旋转圆环</h3>
+      <p>经典边框旋转加载器，通过 border-top 颜色差异配合 rotate 实现无限旋转。</p>
+    </div>
+    <div class="card-footer">
+      <button class="btn copy-btn">复制 CSS</button>
+      <button class="btn toggle-btn">查看代码</button>
+    </div>
+    <div class="code-viewer"><pre>/* 旋转圆环 */
+.ring-loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(129, 140, 248, 0.2);
+  border-top-color: #818cf8;
+  border-radius: 50%;
+  animation: ring-spin 0.8s linear infinite;
+  will-change: transform;
+}
+
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-loader { animation: none; }
+}</pre></div>
+  </article>
+
+  <!-- ===================== 2 · 脉冲圆点 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host">
+      <div class="pulse-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>脉冲圆点</h3>
+      <p>三个圆点依次缩放脉动，通过 animation-delay 制造错峰节奏，营造"呼吸感"。</p>
+    </div>
+    <div class="card-footer">
+      <button class="btn copy-btn">复制 CSS</button>
+      <button class="btn toggle-btn">查看代码</button>
+    </div>
+    <div class="code-viewer"><pre>/* 脉冲圆点 */
+.pulse-dots {
+  display: flex;
+  gap: 10px;
+}
+.pulse-dots span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #818cf8;
+  animation: dot-pulse 1.4s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.pulse-dots span:nth-child(2) { animation-delay: 0.2s; }
+.pulse-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dot-pulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dots span { animation: none; opacity: 0.7; }
+}</pre></div>
+  </article>
+
+  <!-- ===================== 3 · 弹跳柱条 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host">
+      <div class="bounce-bars">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>弹跳柱条</h3>
+      <p>五根竖条以 scaleY 上下弹跳，逐条延迟形成波浪，类似音频均衡器视觉。</p>
+    </div>
+    <div class="card-footer">
+      <button class="btn copy-btn">复制 CSS</button>
+      <button class="btn toggle-btn">查看代码</button>
+    </div>
+    <div class="code-viewer"><pre>/* 弹跳柱条 */
+.bounce-bars {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  height: 48px;
+}
+.bounce-bars span {
+  width: 7px;
+  height: 100%;
+  background: #34d399;
+  border-radius: 4px;
+  animation: bar-bounce 1s ease-in-out infinite;
+  will-change: transform;
+}
+.bounce-bars span:nth-child(2) { animation-delay: 0.1s; }
+.bounce-bars span:nth-child(3) { animation-delay: 0.2s; }
+.bounce-bars span:nth-child(4) { animation-delay: 0.3s; }
+.bounce-bars span:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes bar-bounce {
+  0%, 100% { transform: scaleY(0.35); }
+  50%      { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bounce-bars span { animation: none; transform: scaleY(0.6); }
+}</pre></div>
+  </article>
+
+  <!-- ===================== 4 · 波纹圆圈 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host">
+      <div class="ripple-loader">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>波纹圆圈</h3>
+      <p>三层圆环从中心向外扩散并淡出，通过 scale + opacity 叠加错峰延迟模拟水波。</p>
+    </div>
+    <div class="card-footer">
+      <button class="btn copy-btn">复制 CSS</button>
+      <button class="btn toggle-btn">查看代码</button>
+    </div>
+    <div class="code-viewer"><pre>/* 波纹圆圈 */
+.ripple-loader {
+  position: relative;
+  width: 52px;
+  height: 52px;
+}
+.ripple-loader span {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #f59e0b;
+  border-radius: 50%;
+  animation: ripple-pulse 1.5s ease-out infinite;
+  will-change: transform, opacity;
+}
+.ripple-loader span:nth-child(2) { animation-delay: 0.5s; }
+.ripple-loader span:nth-child(3) { animation-delay: 1s; }
+
+@keyframes ripple-pulse {
+  0%   { transform: scale(0); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple-loader span { animation: none; opacity: 0.5; }
+}</pre></div>
+  </article>
+
+  <!-- ===================== 5 · 渐变锥形旋转器 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host">
+      <div class="conic-spinner"></div>
+    </div>
+    <div class="card-body">
+      <h3>渐变锥形旋转器</h3>
+      <p>利用 conic-gradient 生成锥形渐变，配合 radial-gradient mask 镂空成环，旋转产生拖尾。</p>
+    </div>
+    <div class="card-footer">
+      <button class="btn copy-btn">复制 CSS</button>
+      <button class="btn toggle-btn">查看代码</button>
+    </div>
+    <div class="code-viewer"><pre>/* 渐变锥形旋转器 */
+.conic-spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #ec4899, #818cf8, transparent 70%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  animation: conic-spin 1s linear infinite;
+  will-change: transform;
+}
+
+@keyframes conic-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conic-spinner { animation: none; }
+}</pre></div>
+  </article>
+
+  <!-- ===================== 6 · 打字指示器 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host">
+      <div class="typing-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>打字指示器</h3>
+      <p>模拟即时通讯中"对方正在输入"的经典三点跳动效果，translateY 上下弹跳。</p>
+    </div>
+    <div class="card-footer">
+      <button class="btn copy-btn">复制 CSS</button>
+      <button class="btn toggle-btn">查看代码</button>
+    </div>
+    <div class="code-viewer"><pre>/* 打字指示器 */
+.typing-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 12px 18px;
+  border-radius: 12px;
+}
+.typing-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #06b6d4;
+  animation: typing-bounce 1.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0);   opacity: 0.5; }
+  30%           { transform: translateY(-9px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing-dots span { animation: none; opacity: 0.7; }
+}</pre></div>
+  </article>
+
+  <!-- ===================== 7 · 骨架屏微光 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host">
+      <div class="skeleton-shimmer">
+        <div class="sk-line"></div>
+        <div class="sk-line"></div>
+        <div class="sk-line"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>骨架屏微光</h3>
+      <p>内容占位线上的高光从左到右扫过，伪元素 ::after 配合 translateX 实现 GPU 加速扫光。</p>
+    </div>
+    <div class="card-footer">
+      <button class="btn copy-btn">复制 CSS</button>
+      <button class="btn toggle-btn">查看代码</button>
+    </div>
+    <div class="code-viewer"><pre>/* 骨架屏微光 */
+.skeleton-shimmer {
+  width: 130px;
+}
+.skeleton-shimmer .sk-line {
+  height: 12px;
+  border-radius: 5px;
+  background: #25253a;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.skeleton-shimmer .sk-line:last-child {
+  margin-bottom: 0;
+  width: 65%;
+}
+.skeleton-shimmer .sk-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.4), transparent);
+  transform: translateX(-100%);
+  animation: shimmer-slide 1.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes shimmer-slide {
+  100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer .sk-line::after { display: none; }
+}</pre></div>
+  </article>
+
+  <!-- ===================== 8 · DNA 双螺旋 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host">
+      <div class="dna-helix">
+        <div class="rung"></div>
+        <div class="rung"></div>
+        <div class="rung"></div>
+        <div class="rung"></div>
+        <div class="rung"></div>
+        <div class="rung"></div>
+        <div class="rung"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>DNA 双螺旋</h3>
+      <p>七根渐变横条以 rotateY 3D 旋转，错峰延迟产生螺旋扭转效果，呈现双链交叉视错觉。</p>
+    </div>
+    <div class="card-footer">
+      <button class="btn copy-btn">复制 CSS</button>
+      <button class="btn toggle-btn">查看代码</button>
+    </div>
+    <div class="code-viewer"><pre>/* DNA 双螺旋 */
+.dna-helix {
+  width: 44px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  perspective: 100px;
+}
+.dna-helix .rung {
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, #a78bfa 0%, #a78bfa 15%, #f472b6 85%, #f472b6 100%);
+  border-radius: 2px;
+  animation: dna-rotate 2s linear infinite;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.dna-helix .rung:nth-child(1) { animation-delay: 0s; }
+.dna-helix .rung:nth-child(2) { animation-delay: -0.2s; }
+.dna-helix .rung:nth-child(3) { animation-delay: -0.4s; }
+.dna-helix .rung:nth-child(4) { animation-delay: -0.6s; }
+.dna-helix .rung:nth-child(5) { animation-delay: -0.8s; }
+.dna-helix .rung:nth-child(6) { animation-delay: -1s; }
+.dna-helix .rung:nth-child(7) { animation-delay: -1.2s; }
+
+@keyframes dna-rotate {
+  0%   { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dna-helix .rung { animation: none; }
+}</pre></div>
+  </article>
+
+  <!-- ===================== 9 · 轨道滑块 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host"><div class="track-loader"></div></div>
+    <div class="card-body"><h3>轨道滑块</h3><p>一段高亮色块沿着暗色轨道来回滑动，适合线性进度中的等待状态。</p></div>
+    <div class="card-footer"><button class="btn copy-btn">复制 CSS</button><button class="btn toggle-btn">查看代码</button></div>
+    <div class="code-viewer"><pre>.track-loader { width: 96px; height: 8px; border-radius: 999px; background: #25253a; overflow: hidden; }
+.track-loader::after { content: ''; display: block; width: 42%; height: 100%; background: #f97316; animation: track-slide 1.1s ease-in-out infinite; }
+@keyframes track-slide { 0%, 100% { transform: translateX(-100%); } 50% { transform: translateX(140%); } }</pre></div>
+  </article>
+
+  <!-- ===================== 10 · 翻转方块 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host"><div class="flip-cube"></div></div>
+    <div class="card-body"><h3>翻转方块</h3><p>方块沿 X、Y 轴连续翻转，简洁而有空间感，适合作为内容切换的等待反馈。</p></div>
+    <div class="card-footer"><button class="btn copy-btn">复制 CSS</button><button class="btn toggle-btn">查看代码</button></div>
+    <div class="code-viewer"><pre>.flip-cube { width: 38px; height: 38px; background: #22c55e; animation: cube-flip 1.35s ease-in-out infinite; }
+@keyframes cube-flip { 0%,100% { transform: perspective(120px) rotateX(0) rotateY(0); } 25% { transform: perspective(120px) rotateX(180deg); } 50% { transform: perspective(120px) rotateX(180deg) rotateY(180deg); } }</pre></div>
+  </article>
+
+  <!-- ===================== 11 · 轨道卫星 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host"><div class="orbit-loader"></div></div>
+    <div class="card-body"><h3>轨道卫星</h3><p>发光圆点围绕细轨道持续运行，轻量地表达后台任务正在处理。</p></div>
+    <div class="card-footer"><button class="btn copy-btn">复制 CSS</button><button class="btn toggle-btn">查看代码</button></div>
+    <div class="code-viewer"><pre>.orbit-loader { width: 54px; height: 54px; border: 2px solid rgba(56,189,248,.3); border-radius: 50%; animation: orbit-spin 1.3s linear infinite; }
+.orbit-loader::after { content: ''; position: absolute; top: -6px; left: 50%; width: 10px; height: 10px; border-radius: 50%; background: #38bdf8; }
+@keyframes orbit-spin { to { transform: rotate(360deg); } }</pre></div>
+  </article>
+
+  <!-- ===================== 12 · 等距旋转点 ===================== -->
+  <article class="card">
+    <div class="card-preview anim-host"><div class="spinner-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+    <div class="card-body"><h3>等距旋转点</h3><p>八颗渐变透明度的小点按固定步幅旋转，呈现经典的系统加载指示器。</p></div>
+    <div class="card-footer"><button class="btn copy-btn">复制 CSS</button><button class="btn toggle-btn">查看代码</button></div>
+    <div class="code-viewer"><pre>.spinner-dots { position: relative; width: 48px; height: 48px; animation: dots-spin 1s steps(8,end) infinite; }
+.spinner-dots span { position: absolute; top: 0; left: 50%; width: 8px; height: 8px; border-radius: 50%; transform-origin: 4px 24px; }
+@keyframes dots-spin { to { transform: rotate(360deg); } }</pre></div>
+  </article>
+
+</div>
+</main>
+
+<script>
+(function () {
+  /* ---- 复制 CSS ---- */
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var card  = btn.closest('.card');
+      var code  = card.querySelector('.code-viewer pre').textContent.trim();
+      var label = btn.textContent;
+
+      function done() {
+        btn.textContent = '已复制 \u2713';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = label;
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(done).catch(fallback);
+      } else {
+        fallback();
+      }
+
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = code;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+  });
+
+  /* ---- 查看 / 隐藏代码 ---- */
+  document.querySelectorAll('.toggle-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var viewer = btn.closest('.card').querySelector('.code-viewer');
+      viewer.classList.toggle('open');
+      btn.textContent = viewer.classList.contains('open') ? '隐藏代码' : '查看代码';
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
